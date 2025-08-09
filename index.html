@@ -1,0 +1,786 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Para Sinai — Siempre puedes contar conmigo 🌻</title>
+    <meta name="description"
+        content="Carta interactiva para una maestra: girasoles, mensajes de apoyo y animaciones." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sacramento&family=Inter:wght@300;400;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg1: #fffaf0;
+            --bg2: #fff3d9;
+            --accent: #FFB703;
+            --accent-2: #F77F00;
+            --text: #24323a;
+            --muted: #6b6f76;
+            --card: rgba(255, 255, 255, 0.85);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            min-height: 100vh;
+            /* para que el contenido pueda crecer y permita scroll */
+            height: auto;
+            /* no forzar 100% */
+            overflow-x: hidden;
+            /* evitar scroll horizontal */
+            font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: radial-gradient(1200px 600px at 10% 10%, rgba(255, 215, 120, 0.12), transparent),
+                linear-gradient(180deg, var(--bg1), var(--bg2));
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 28px;
+        }
+
+        .wrap {
+            width: 100%;
+            max-width: 980px;
+            border-radius: 20px;
+            padding: 26px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.75));
+            box-shadow: 0 18px 40px rgba(20, 30, 40, 0.08);
+            position: relative;
+            overflow: visible;
+            /* cambió de hidden para permitir que crezca el contenido */
+            border: 1px solid rgba(255, 183, 3, 0.06);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sunflower-deco {
+            position: absolute;
+            right: -40px;
+            top: -40px;
+            opacity: 0.12;
+            font-size: 360px;
+            transform: rotate(-12deg);
+            pointer-events: none;
+        }
+
+        header {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+            margin-bottom: 18px;
+            width: 100%;
+        }
+
+        .logo {
+            width: 86px;
+            height: 86px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, #FFD966, #FFB703);
+            display: grid;
+            place-items: center;
+            font-family: "Sacramento", cursive;
+            font-size: 34px;
+            color: #4b2e00;
+            box-shadow: 0 12px 28px rgba(247, 127, 0, 0.12);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        p.lead {
+            margin: 6px 0 0 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 22px;
+            margin-top: 18px;
+        }
+
+        @media (max-width: 880px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+            .sunflower-deco {
+                display: none;
+            }
+        }
+
+        /* left - letter area */
+        .card {
+            background: var(--card);
+            border-radius: 14px;
+            padding: 18px;
+            box-shadow: 0 10px 26px rgba(10, 20, 30, 0.04);
+            min-height: 360px;
+            position: relative;
+            overflow: auto;
+            /* permite scroll si hay mucho contenido */
+        }
+
+        .letter {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 12px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 249, 240, 0.9));
+            border: 1px solid rgba(244, 183, 65, 0.08);
+        }
+
+        .greeting {
+            font-family: "Sacramento", cursive;
+            font-size: 36px;
+            color: #5b3a00;
+            margin: 0 0 8px 0;
+        }
+
+        .body-text {
+            color: var(--text);
+            line-height: 1.6;
+            margin: 0 0 12px 0;
+            font-size: 16px;
+        }
+
+        .signature {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-top: 14px;
+        }
+
+        .sig-left {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .sig-name {
+            font-weight: 700;
+            color: #3a2400;
+        }
+
+        /* right panel - controls */
+        .panel {
+            border-radius: 12px;
+            padding: 16px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 246, 238, 0.85));
+            box-shadow: 0 8px 20px rgba(20, 30, 40, 0.04);
+            height: 100%;
+            overflow-y: auto;
+            /* para que los controles no crezcan sin límite */
+        }
+
+        .panel h3 {
+            margin: 0 0 8px 0;
+            font-size: 16px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 0;
+            cursor: pointer;
+            font-weight: 600;
+            background: white;
+            box-shadow: 0 8px 18px rgba(20, 30, 40, 0.06);
+        }
+
+        .btn.primary {
+            background: linear-gradient(90deg, var(--accent), var(--accent-2));
+            color: #2b1400;
+        }
+
+        .btn.ghost {
+            background: transparent;
+            border: 1px solid rgba(60, 60, 60, 0.06);
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .small {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        /* messages list */
+        .messages {
+            margin-top: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 260px;
+            overflow: auto;
+            padding-right: 6px;
+        }
+
+        .msg {
+            padding: 10px 12px;
+            border-radius: 10px;
+            background: linear-gradient(90deg, rgba(255, 250, 235, 0.9), rgba(255, 247, 230, 0.85));
+            border: 1px solid rgba(255, 190, 70, 0.06);
+            font-size: 14px;
+            color: var(--text);
+        }
+
+        /* animations: petals */
+        canvas#petalCanvas {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* modal letter animation overlay */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            background: rgba(12, 16, 22, 0.32);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .28s ease;
+        }
+
+        .overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal {
+            width: 92%;
+            max-width: 760px;
+            border-radius: 16px;
+            padding: 26px;
+            background: linear-gradient(180deg, #fff, #fff8f0);
+            box-shadow: 0 30px 60px rgba(10, 20, 30, 0.35);
+            transform: translateY(20px);
+            transition: transform .36s cubic-bezier(.2, .9, .3, 1);
+        }
+
+        .overlay.show .modal {
+            transform: translateY(0);
+        }
+
+        /* little sunflower badge */
+        .badge {
+            position: fixed;
+            left: 18px;
+            bottom: 18px;
+            background: linear-gradient(135deg, #FFF2D6, #FFE2A5);
+            padding: 10px 12px;
+            border-radius: 12px;
+            box-shadow: 0 12px 30px rgba(20, 30, 40, 0.08);
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            font-size: 13px;
+        }
+
+        footer {
+            margin-top: 12px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        /* Card especial para imagen */
+        .image-card {
+            background: url('girasoles.png') no-repeat center center;
+            background-size: cover;
+            padding: 15px;
+            border-radius: 20px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+            max-width: 280px;
+            cursor: pointer;
+            transition: transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
+        }
+
+        .image-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+        }
+
+        .image-card-preview {
+            width: 100%;
+            border-radius: 15px;
+            display: block;
+        }
+
+        /* Overlay exclusivo para imagen */
+        .image-overlay {
+            display: none;
+            /* Oculto por defecto */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .image-overlay-img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 20px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Botón de cerrar */
+        .image-close-btn {
+            position: absolute;
+            top: 25px;
+            right: 35px;
+            font-size: 40px;
+            color: #fff;
+            cursor: pointer;
+            font-weight: bold;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
+        }
+
+        .image-close-btn:hover {
+            color: #ffeb3b;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap" role="main" aria-label="Carta para Sinai">
+        <div class="sunflower-deco" aria-hidden="true">🌻</div>
+
+        <header>
+            <div class="logo" aria-hidden="true">S</div>
+            <div>
+                <h1>Para Sinai — Siempre a tu lado🌻 </h1>
+                <p class="lead">Perdon el poco estilo....TKM</p>
+            </div>
+        </header>
+
+        <div class="content" style="position:relative; margin-top:12px;">
+            <!-- Petal Canvas -->
+            <canvas id="petalCanvas"></canvas>
+
+            <div class="card" aria-live="polite">
+                <div class="letter" id="letter">
+                    <div class="greeting">Querida Sinai,</div>
+                    <p class="body-text" id="letterBody">
+                        Hoy quería recordarte algo simple y verdadero: <strong>siempre puedes contar conmigo</strong>.
+                        Los tropiezos no definen tu valor, y cada intento te acerca más a lo que deseas. Estoy aquí para
+                        escucharte, acompañarte y celebrar todo lo que logres por muy pequeño que sea.
+                    </p>
+
+                    <div class="signature">
+                        <div class="sig-left">Con cariño, aprecio y apoyo incondicional</div>
+                        <div class="sig-name">De: Saúl</div>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
+                    <div>
+                        <div class="image-card" data-overlay="overlay1">
+                            <img src="Sina.png" alt="Imagen especial" class="image-card-preview">
+                        </div>
+                        <div class="image-overlay" id="overlay1">
+                            <span class="image-close-btn">&times;</span>
+                            <img src="sina2.png" alt="Imagen ampliada" class="image-overlay-img">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="image-card" data-overlay="overlay2">
+                            <img src="Sina3.png" alt="Otra imagen especial" class="image-card-preview">
+                        </div>
+                        <div class="image-overlay" id="overlay2">
+                            <span class="image-close-btn">&times;</span>
+                            <img src="sina4.png" alt="Otra imagen ampliada" class="image-overlay-img">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <aside class="panel" aria-label="Controles de ánimo">
+                <h3>De mi para Ti</h3>
+                <div class="controls">
+                    <button class="btn primary" id="openLetterBtn">💌 Abrir carta</button>
+                    <button class="btn" id="randomMsgBtn">💬 Mostrar mensaje de apoyo</button>
+                    <button class="btn" id="voiceToggle">🔈 Voz: off</button>
+                    <button class="btn" id="celebrateBtn">🎉 Celebrar (confetti)</button>
+                    <div style="display:flex;gap:8px">
+                        <button class="btn ghost" id="playMusic">▶️ Música suave</button>
+                        <button class="btn ghost" id="stopMusic">⏸️ Pausar</button>
+                    </div>
+
+                    <div class="small">Mensajes recientes</div>
+                    <div class="messages" id="messagesList" aria-live="polite"></div>
+                </div>
+            </aside>
+        </div>
+
+        <footer>Hecho con cariño · Girassoles y abrazo digital 🌻</footer>
+    </div>
+
+    <div class="badge" title="Siempre contigo">🌻 Te acompaño</div>
+
+    <!-- Overlay modal -->
+    <div class="overlay" id="overlay" aria-hidden="true">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <h2 id="modalTitle" style="margin-top:0;font-family:'Sacramento';font-size:36px;color:#5b3a00">Una carta
+                para ti</h2>
+            <p style="font-size:16px;color:var(--text);line-height:1.6">
+                Sinai — quiero que recuerdes que no estás sola. Cada esfuerzo cuenta, cada pausa también. Si necesitas
+                hablar, compartir o simplemente silencio acompañado, aquí estoy.
+            </p>
+            <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px">
+                <button class="btn" id="closeOverlay">Cerrar</button>
+                <button class="btn primary" id="overlayCelebrate">Enviar abrazo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal mensajes -->
+    <!-- Modal mensajes con estilos y animación iguales -->
+    <div id="messageOverlay" class="overlay" aria-hidden="true" role="dialog" aria-modal="true"
+        aria-labelledby="modalTitle" style="display:none;">
+        <div class="modal" role="document">
+            <button id="modalCloseBtn" class="image-close-btn" aria-label="Cerrar modal">&times;</button>
+            <h2 id="modalTitle" style="color: var(--accent); margin-bottom: 18px;">Mensaje de apoyo</h2>
+            <p id="modalMessage" style="font-size: 18px; color: var(--text); min-height: 100px;"></p>
+            <div style="display:flex; justify-content:center; gap: 16px; margin-top: 22px;">
+                <button id="prevMsgBtn" class="btn ghost" aria-label="Mensaje anterior">◀️ Anterior</button>
+                <button id="nextMsgBtn" class="btn ghost" aria-label="Siguiente mensaje">Siguiente ▶️</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- audio (relaxing piano) -->
+    <audio id="bgMusic" loop src="ambient-piano-song-400-310453.mp3"></audio>
+
+    <!-- confetti lib -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+
+        // ==== Data ====
+        const messages = [
+            '🌟 <strong style="color:#FFB703;">Sinai</strong>, tu pasión y dedicación te llevarán lejos. <em>Nunca dejes de soñar en grande</em> y luchar por lo que quieres.',
+            '📚 <q style="font-style:italic; color:#F77F00;">El éxito es la suma de pequeños esfuerzos repetidos día tras día.</q> – <strong>Robert Collier</strong>. Sigue adelante, estás construyendo tu camino.',
+            '🚀 Cada paso que das es un avance hacia tus metas. Recuerda que los grandes logros empiezan con <span style="font-weight:600;">pequeños intentos</span>.',
+            '🎓 Eres una maestra excepcional y una profesional en formación. Tu <span style="font-weight:700;">paciencia y esfuerzo</span> son el motor de tu crecimiento.',
+            '💡 No temas equivocarte; los errores son <em>lecciones valiosas</em> que te acercan más a tu propósito.',
+            '🌱 <q style="font-style:italic; color:#F77F00;">La educación es el arma más poderosa para cambiar el mundo.</q> – <strong>Nelson Mandela</strong>. Tu aprendizaje impactará a muchos.',
+            '🔥 Mantén viva esa chispa de <span style="color:#F77F00; font-weight:600;">curiosidad</span> y ganas de aprender. El futuro está lleno de oportunidades para ti.',
+            '🤝 Cuando necesites apoyo o simplemente alguien que escuche, recuerda que siempre estaré <strong>aquí para ti</strong>.',
+            '✨ Cada día es una nueva página para escribir tu historia. Llénala de <em>valentía, esfuerzo y alegría</em>.',
+            '🦋 <q style="font-style:italic; color:#F77F00;">No es la montaña lo que conquistamos, sino a nosotros mismos.</q> – <strong>Sir Edmund Hillary</strong>. Eres más fuerte de lo que crees.',
+            '🌈 Sigue cultivando tus sueños con pasión y constancia. La recompensa llegará, paso a paso.',
+            '🌟 <strong>Sinai</strong>, tu talento y dedicación son luz para quienes te rodean. No subestimes el poder de tu <span style="color:#FFB703;">influencia positiva</span>.',
+            '📖 <q style="font-style:italic; color:#F77F00;">La verdadera enseñanza no es dar respuestas, sino enseñar a pensar.</q> – <strong>Sócrates</strong>. Sigue creciendo como profesional y persona.',
+            '🎯 Apunta alto, enfócate en tus metas y no te dejes vencer por las dificultades. Eres capaz de lograr todo lo que te propongas.',
+            '🌻 Tu esfuerzo hoy es la semilla del éxito de mañana. Cultívala con <em>amor y paciencia</em>.'
+        ];
+
+
+        // ==== Elements ====
+        const randomMsgBtn = document.getElementById('randomMsgBtn');
+        const messagesList = document.getElementById('messagesList');
+        const voiceToggle = document.getElementById('voiceToggle');
+        const letter = document.getElementById('letter');
+        const celebrateBtn = document.getElementById('celebrateBtn');
+        const openLetterBtn = document.getElementById('openLetterBtn');
+        const overlay = document.getElementById('overlay');
+        const closeOverlay = document.getElementById('closeOverlay');
+        const overlayCelebrate = document.getElementById('overlayCelebrate');
+        const bgMusic = document.getElementById('bgMusic');
+        const playMusic = document.getElementById('playMusic');
+        const stopMusic = document.getElementById('stopMusic');
+        // Variables para manejar el modal y los mensajes
+        const messageOverlay = document.getElementById('messageOverlay');
+        const modalMessage = document.getElementById('modalMessage');
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
+        const prevMsgBtn = document.getElementById('prevMsgBtn');
+        const nextMsgBtn = document.getElementById('nextMsgBtn');
+
+        let currentMsgIndex = 0;
+
+        function showMessage(index) {
+            if (index < 0) index = messages.length - 1;
+            if (index >= messages.length) index = 0;
+            currentMsgIndex = index;
+            modalMessage.innerHTML = messages[currentMsgIndex];
+
+            if (voiceOn) speakText(modalMessage.textContent);
+        }
+
+        randomMsgBtn.addEventListener('click', () => {
+            showMessage(Math.floor(Math.random() * messages.length));
+            messageOverlay.style.display = 'grid'; // para que se active display grid y animación
+            setTimeout(() => messageOverlay.classList.add('show'), 20); // animación fade-in
+            messageOverlay.setAttribute('aria-hidden', 'false');
+            modalCloseBtn.focus();
+        });
+
+        function closeModal() {
+            messageOverlay.classList.remove('show');
+            setTimeout(() => {
+                messageOverlay.style.display = 'none';
+                messageOverlay.setAttribute('aria-hidden', 'true');
+            }, 280); // debe coincidir con la transición CSS
+            window.speechSynthesis.cancel();
+        }
+
+        modalCloseBtn.addEventListener('click', closeModal);
+
+        prevMsgBtn.addEventListener('click', () => {
+            showMessage(currentMsgIndex - 1);
+        });
+
+        nextMsgBtn.addEventListener('click', () => {
+            showMessage(currentMsgIndex + 1);
+        });
+
+        window.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && messageOverlay.classList.contains('show')) {
+                closeModal();
+            }
+        });
+
+
+
+        // ==== Voice Toggle ====
+        let voiceOn = false;
+        voiceToggle.addEventListener('click', () => {
+            voiceOn = !voiceOn;
+            voiceToggle.textContent = voiceOn ? '🔈 Voz: on' : '🔈 Voz: off';
+
+            // Si se activa la voz, leer la carta inmediatamente
+            if (voiceOn) {
+                readLetter();
+            } else {
+                window.speechSynthesis.cancel(); // Detener lectura si estaba en curso
+            }
+        });
+
+        // ==== Función para leer la carta ====
+        function readLetter() {
+            if (!letter) return;
+
+            // Obtener todo el texto de la carta
+            const text = letter.innerText;
+
+            // Crear objeto de lectura
+            const speech = new SpeechSynthesisUtterance(text);
+            speech.lang = 'es-ES'; // Español
+            speech.rate = 1;       // Velocidad normal
+            speech.pitch = 1;      // Tono normal
+
+            // Reproducir
+            window.speechSynthesis.speak(speech);
+        }
+
+        // random message action
+        function pushMessage(text) {
+            const el = document.createElement('div');
+            el.className = 'msg';
+            el.textContent = text;
+            messagesList.prepend(el);
+            // keep only 6 recent
+            while (messagesList.children.length > 6) messagesList.removeChild(messagesList.lastChild);
+            // optional voice
+            if (voiceOn && 'speechSynthesis' in window) {
+                speakText(text);
+            }
+        }
+
+        randomMsgBtn.addEventListener('click', () => {
+            const text = messages[Math.floor(Math.random() * messages.length)];
+            pushMessage(text);
+            // small celebratory confetti
+            confetti({
+                particleCount: 50,
+                spread: 60,
+                origin: { y: 0.4 }
+            });
+        });
+
+        // confetti
+        celebrateBtn.addEventListener('click', () => {
+            confetti({
+                particleCount: 120,
+                spread: 110,
+                origin: { y: 0.35 }
+            });
+        });
+
+        overlayCelebrate.addEventListener('click', () => {
+            pushMessage("Te mando un abrazo grande — ¡lo logras paso a paso!");
+            confetti({ particleCount: 100, spread: 140, origin: { y: 0.4 } });
+        });
+
+        // modal open/close
+        openLetterBtn.addEventListener('click', () => { overlay.classList.add('show'); overlay.setAttribute('aria-hidden', 'false'); });
+        closeOverlay.addEventListener('click', () => { overlay.classList.remove('show'); overlay.setAttribute('aria-hidden', 'true'); });
+
+        // music
+        playMusic.addEventListener('click', () => bgMusic.play());
+        stopMusic.addEventListener('click', () => bgMusic.pause());
+
+        // speech
+        function speakText(text) {
+            if (!('speechSynthesis' in window)) return;
+            speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(text);
+            u.lang = 'es-MX';
+            u.rate = 0.95;
+            u.pitch = 1;
+            speechSynthesis.speak(u);
+        }
+
+        // Keyboard shortcuts
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'm') randomMsgBtn.click();
+            if (e.key === 'c') celebrateBtn.click();
+            if (e.key === 'l') openLetterBtn.click();
+        });
+
+        // ==== Petal particle system (sunflower petals / small emoji) ====
+        (function petalSystem() {
+            const canvas = document.getElementById('petalCanvas');
+            const ctx = canvas.getContext('2d');
+            let W, H, particles = [];
+
+            function resize() {
+                W = canvas.width = canvas.clientWidth;
+                H = canvas.height = canvas.clientHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            function rand(min, max) { return Math.random() * (max - min) + min; }
+
+            class Petal {
+                constructor() {
+                    this.reset();
+                }
+                reset() {
+                    this.x = rand(-50, W + 50);
+                    this.y = rand(-H * 0.3, -20);
+                    this.vx = rand(-0.3, 0.9);
+                    this.vy = rand(0.6, 2.2);
+                    this.size = rand(12, 28);
+                    this.rotation = rand(0, Math.PI * 2);
+                    this.angularV = rand(-0.02, 0.02);
+                    this.opacity = rand(0.6, 1);
+                    // choose emoji or drawn petal
+                    this.emoji = Math.random() > 0.6 ? "🌻" : null;
+                }
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    this.vx += Math.sin(this.y / 1200) * 0.01;
+                    this.rotation += this.angularV;
+                    if (this.y > H + 30 || this.x < -80 || this.x > W + 80) this.reset();
+                }
+                draw() {
+                    ctx.save();
+                    ctx.globalAlpha = this.opacity;
+                    ctx.translate(this.x, this.y);
+                    ctx.rotate(this.rotation);
+                    if (this.emoji) {
+                        ctx.font = `${this.size}px serif`;
+                        ctx.fillText(this.emoji, -this.size / 2, this.size / 2);
+                    } else {
+                        // draw simple petal shape
+                        ctx.fillStyle = "#FFCF73";
+                        ctx.beginPath();
+                        ctx.ellipse(0, 0, this.size * 0.6, this.size, 0, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.fillStyle = "rgba(255,170,50,0.85)";
+                        ctx.beginPath();
+                        ctx.ellipse(0, -this.size * 0.15, this.size * 0.25, this.size * 0.6, 0, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                    ctx.restore();
+                }
+            }
+
+            // populate
+            for (let i = 0; i < 28; i++) particles.push(new Petal());
+
+            function loop() {
+                ctx.clearRect(0, 0, W, H);
+                for (let p of particles) { p.update(); p.draw(); }
+                requestAnimationFrame(loop);
+            }
+            loop();
+        })();
+
+        // small welcome message on load
+        // Mensajes de bienvenida
+        const welcomeMessages = [
+            "Tu familia ya lo hace pero, aun asi en el cielo te cuida tu abuelito👴🏻y yo te cuido aqui abajo🛡",
+            "Tal vez no sea mucho🌻, ni algo caro y que muchas personas te lo digan pero estoy muy orgulloso de ti.👩🏻‍🏫",
+            "Hola Sinai🙂, se que no hablamos tan constante 😆y se te pierdes mucho pero no ay dia que no me preocupe de que te encuentres bien🫂, le pido al cielo y a mi dios🙏🏻 que te acompañe todos los dias de tu vida"
+        ];
+
+        // Tiempo de espera antes de mostrar los mensajes (ms)
+        const WELCOME_DELAY = 700;
+
+        // Mostrar mensajes cuando cargue el contenido principal
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                welcomeMessages.forEach(pushMessage);
+            }, WELCOME_DELAY);
+        });
+
+        document.querySelectorAll('.image-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const overlayId = card.getAttribute('data-overlay');
+                const overlay = document.getElementById(overlayId);
+                if (overlay) overlay.style.display = 'flex';
+            });
+        });
+
+        document.querySelectorAll('.image-overlay .image-close-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                btn.parentElement.style.display = 'none';
+            });
+        });
+
+
+    </script>
+</body>
+
+</html>
